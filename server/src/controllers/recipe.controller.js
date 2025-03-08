@@ -220,6 +220,24 @@ const getRecipesByCategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, recipes, "Recipes fetched successfully"));
 });
 
+// Get a random recipe
+const getRandomRecipe = asyncHandler(async (req, res) => {
+  const count = await Recipe.countDocuments();
+
+  if (count === 0) {
+    throw new ApiError(404, "No recipes available");
+  }
+
+  const randomIndex = Math.floor(Math.random() * count);
+  const randomRecipe = await Recipe.findOne().skip(randomIndex);
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, randomRecipe, "Random recipe fetched successfully")
+    );
+});
+
 export {
   getAllRecipes,
   createRecipe,
@@ -232,4 +250,5 @@ export {
   removeSaveRecipe,
   getRecipeById,
   getRecipesByCategory,
+  getRandomRecipe,
 };

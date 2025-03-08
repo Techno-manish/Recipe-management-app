@@ -19,7 +19,8 @@ app.use(cookieParser());
 // routes
 
 import userRoute from "./routes/user.route.js";
-// import recipeRoute from "./routes/recipe.route.js";
+import recipeRoute from "./routes/recipe.route.js";
+import categoryRoute from "./routes/category.route.js";
 
 // routes declaration
 
@@ -27,6 +28,8 @@ app.use("/api/v1/users/", userRoute);
 //http://localhost:8000/api/v1/users/register
 //http://localhost:8000/api/v1/users/login
 
-// app.use("/api/v1/recipe/", recipeRoute);
+app.use("/api/v1/recipe/", recipeRoute);
+
+app.use("/api/v1/recipe/", categoryRoute);
 
 export { app };

@@ -25,5 +25,6 @@ router.route("/delete/:recipeId").delete(deleteUserRecipes);
 router.route("/update/:recipeId").put(updateUserRecipe);
 router.route("/removeSaved/:recipeId/:userId").put(removeSaveRecipe);
 router.route("/category/:categoryId").get(getRecipesByCategory);
+router.route("/random").get(getRandomRecipe);
 
 export default router;

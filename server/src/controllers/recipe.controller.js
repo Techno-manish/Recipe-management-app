@@ -174,13 +174,11 @@ const removeSaveRecipe = asyncHandler(async (req, res) => {
     throw new ApiError(404, `User not found`);
   }
 
-  res
-    .status(200)
-    .json(
-      new ApiResponse(200, `Recipe removed from saved`, {
-        savedRecipes: user.savedRecipes,
-      })
-    );
+  res.status(200).json(
+    new ApiResponse(200, `Recipe removed from saved`, {
+      savedRecipes: user.savedRecipes,
+    })
+  );
 });
 
 // get specific recipe by id
@@ -203,6 +201,25 @@ const getRecipeById = asyncHandler(async (req, resp) => {
     .json(new ApiResponse(200, recipe, "Recipe Fetch Successfully"));
 });
 
+// Get recipes by category
+const getRecipesByCategory = asyncHandler(async (req, res) => {
+  const { categoryId } = req.params;
+
+  if (!categoryId) {
+    throw new ApiError(400, "Category ID is required");
+  }
+
+  const recipes = await Recipe.find({ category: categoryId });
+
+  if (!recipes.length) {
+    throw new ApiError(404, "No recipes found for this category");
+  }
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, recipes, "Recipes fetched successfully"));
+});
+
 export {
   getAllRecipes,
   createRecipe,
@@ -214,4 +231,5 @@ export {
   updateUserRecipe,
   removeSaveRecipe,
   getRecipeById,
+  getRecipesByCategory,
 };

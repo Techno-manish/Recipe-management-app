@@ -1,9 +1,10 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { logRequests } from "./middlewares/logger.middleware.js";
 
 const app = express();
-
+app.use(logRequests);
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,

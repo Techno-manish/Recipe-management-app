@@ -60,9 +60,9 @@ const registerUser = asyncHandler(async (req, resp) => {
 
 const loginUser = asyncHandler(async (req, resp) => {
   // data from frontend
-  console.log("logindata", req.body);
+  // console.log("logindata", req.body);
   const { username, password } = req.body;
-  console.log("logindata", req.body);
+  // console.log("logindata", req.body);
 
   // validation
 
@@ -92,16 +92,26 @@ const loginUser = asyncHandler(async (req, resp) => {
 
   const loggedInUser = await User.findById(user._id).select(" --password");
 
-  return resp.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        user: loggedInUser,
-        access_token: accessToken,
-      },
-      `User logged in successfully`
-    )
-  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return resp
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: loggedInUser,
+          access_token: accessToken,
+        },
+        `User logged in successfully`
+      )
+    );
 });
 
-export { registerUser, loginUser };
+const logoutUser = asyncHandler(async (req, res) => {});
+
+export { registerUser, loginUser, logoutUser };

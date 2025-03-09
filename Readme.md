@@ -1,6 +1,14 @@
-# Let's Cook
+# Recipe Management App
 
-### Welcome to Let's! This web application allows users to manage their recipes, including adding, editing, and deleting recipes, and saving other recipes.
+### Welcome to Recipe Management App! This web application allows users to manage their recipes, including adding, editing, and deleting recipes, saving other recipes, and organize their created recipes.
+
+# 💼 Live Demo
+
+<ul>
+  <li>🔗 <strong>Project - Recipe Management App</strong><br/>
+      <a href="https://recipe-management-app-frontend-g0wa.onrender.com" target="_blank" rel="noopener noreferrer">Live Demo</a> |  <a href="https://github.com/Techno-manish/Recipe-management-app" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+  </li>
+</ul>
 
 #
 

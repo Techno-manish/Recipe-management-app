@@ -37,11 +37,10 @@ const RecipeSchema = new Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
-      default: 0,
+      default: () => new mongoose.Types.ObjectId("67cd53edd5f5d1c3cf7a19fd"),
     },
 
-    order: { type: Number, required: true },
+    order: { type: Number, required: true, default: 0 },
 
     userOwner: {
       type: mongoose.Schema.Types.ObjectId,

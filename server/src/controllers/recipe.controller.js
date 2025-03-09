@@ -3,12 +3,17 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Recipe } from "../models/recipe.model.js";
 import { User } from "../models/user.model.js";
+import mongoose from "mongoose";
 
 // get all recipes
 
 const getAllRecipes = asyncHandler(async (_, resp) => {
   try {
-    const recipe = await Recipe.find({});
+    const recipe = await Recipe.find({}).populate({
+      path: "category",
+      select: "name", // Fetch only the category name
+      strictPopulate: false, // Ensures no error if category is missing
+    });
 
     return resp
       .status(200)
@@ -21,6 +26,9 @@ const getAllRecipes = asyncHandler(async (_, resp) => {
 // create recipe
 
 const createRecipe = asyncHandler(async (req, resp) => {
+  if (!req.body.category || req.body.category.trim() === "") {
+    req.body.category = new mongoose.Types.ObjectId("67cd53edd5f5d1c3cf7a19fd");
+  }
   const recipe = new Recipe(req.body);
   try {
     const response = await recipe.save();
@@ -112,7 +120,7 @@ const getUserRecipes = asyncHandler(async (req, resp) => {
 
 const deleteUserRecipes = asyncHandler(async (req, resp) => {
   const recipe = await Recipe.findByIdAndDelete(req.params.recipeId);
-  console.log(recipe);
+  // console.log(recipe);
 
   if (!recipe) {
     throw new ApiError(400, `Recipe not found`);

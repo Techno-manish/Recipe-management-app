@@ -29,7 +29,8 @@ app.use("/api/v1/users/", userRoute);
 //http://localhost:8000/api/v1/users/login
 
 app.use("/api/v1/recipe/", recipeRoute);
+//POST  http://localhost:8000/api/v1/recipe/create
 
-app.use("/api/v1/recipe/", categoryRoute);
+app.use("/api/v1/category/", categoryRoute);
 
 export { app };

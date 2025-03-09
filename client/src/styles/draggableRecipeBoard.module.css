@@ -1,0 +1,80 @@
+.recipeBoard {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.categoryColumn {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    min-width: 300px;
+    max-width: 350px;
+    min-height: 55vh;
+    flex: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.categoryTitle {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.recipeList {
+    min-height: 100px;
+}
+
+.recipeCard {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s;
+    /* width: calc(100% - 10px); */
+    max-height: 80px;
+    max-width: 100%;
+}
+
+.recipeContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.recipeCard:hover {
+    transform: scale(1.02);
+}
+
+.recipeImageSmall {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.recipeName {
+    font-weight: bold;
+    font-size: 14px;
+    flex-grow: 1;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+.saveButton {
+    display: block;
+    margin: 20px auto;
+    padding: 8px 20px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

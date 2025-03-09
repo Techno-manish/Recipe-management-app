@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { Input, Form, Button, Tag, message } from "antd";
+import { Input, Form, Button, Tag, message, Select, Spin } from "antd";
 import createRecipeImg from "../assets/createRecipe.png";
 import "../styles/createRecipe.css";
 import UploadWidget from "../components/UploadWidget.jsx";
@@ -12,15 +12,18 @@ import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner.jsx";
 import API_BASE_URL from "../constant.js";
 
+const { Option } = Select;
+
 const CreateRecipe = () => {
   const { currentUser } = useSelector((state) => state.user);
   const userId = currentUser.data.data.user._id;
 
   const navigate = useNavigate();
-
   const [cookies, _] = useCookies(["access_token"]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([]); // Stores fetched categories
+  const [lastOrder, setLastOrder] = useState(0); // Stores last order value
 
   const [recipe, setRecipe] = useState({
     name: "",
@@ -29,8 +32,45 @@ const CreateRecipe = () => {
     instructions: "",
     recipeImg: "",
     cookingTime: 0,
+    category: "", // Default empty category
+    order: 0, // Will be updated dynamically
     userOwner: userId,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const categoryResp = await axios.get(
+          `${API_BASE_URL}/api/v1/category/`
+        );
+        const recipeResp = await axios.get(`${API_BASE_URL}/api/v1/recipe/`);
+
+        console.log("Category Response:", categoryResp.data);
+        console.log("Recipe Response:", recipeResp.data);
+
+        // Extract categories safely
+        setCategories(categoryResp.data?.data || []);
+
+        // Extract recipes and determine next order
+        const recipesArray = recipeResp.data?.data || [];
+        const maxOrder = recipesArray.length
+          ? Math.max(...recipesArray.map((r) => r.order || 0))
+          : 0;
+
+        setLastOrder(maxOrder);
+        setRecipe((prev) => ({ ...prev, order: maxOrder + 1 }));
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching categories or order data", error);
+        setCategories([]); // Ensure categories is always an array
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (field, value) => {
     setRecipe({ ...recipe, [field]: value });
@@ -58,9 +98,11 @@ const CreateRecipe = () => {
       const requiredFields = ["name", "instructions", "recipeImg"];
       if (requiredFields.some((field) => !recipe[field])) {
         console.error("Required fields are missing");
+        message.error("Please fill in all required fields.");
+        setIsLoading(false);
         return;
       }
-
+      console.log("Submitting Recipe Data:", recipe);
       const resp = await axios.post(
         `${API_BASE_URL}/api/v1/recipe/create`,
         { ...recipe },
@@ -68,6 +110,7 @@ const CreateRecipe = () => {
           headers: { authorization: cookies.access_token },
         }
       );
+
       console.log("Response:", resp);
       setIsLoading(false);
       message.success("Recipe Created");
@@ -75,6 +118,7 @@ const CreateRecipe = () => {
     } catch (error) {
       console.error(error);
       message.error("Failed to create recipe");
+      setIsLoading(false);
     }
   };
 
@@ -141,6 +185,22 @@ const CreateRecipe = () => {
               </div>
             </Form.Item>
 
+            <Form.Item name="category" label="Category">
+              <Select
+                placeholder="Select a category (optional)"
+                allowClear
+                value={recipe.category}
+                onChange={(value) => handleChange("category", value)}
+                loading={isLoading}
+              >
+                {categories.map((cat) => (
+                  <Option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
             <Form.Item
               name="instructions"
               rules={[
@@ -181,7 +241,7 @@ const CreateRecipe = () => {
             <Form.Item>
               {isLoading ? (
                 <Button type="primary" htmlType="submit">
-                  <Spinner />
+                  <Spin />
                 </Button>
               ) : (
                 <Button type="primary" htmlType="submit">

@@ -1,0 +1,24 @@
+.createRecipe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.createRecipe img {
+    width: 600px;
+    order: 1;
+}
+
+.createRecipeForm {
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    gap: 10px;
+}
+
+@media (max-width: 968px) {
+    .createRecipe img{
+        display: none;
+    }
+}

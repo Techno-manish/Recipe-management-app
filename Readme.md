@@ -2,6 +2,10 @@
 
 ### Welcome to Recipe Management App! This web application allows users to manage their recipes, including adding, editing, and deleting recipes, saving other recipes, and organize their created recipes.
 
+# Backend Schema Link
+
+<a href="https://app.eraser.io/workspace/D9DFfxABdckYj3H9MSyE?origin=share" target="_blank" rel="noopener noreferrer">🔗Backend ER model Link</a>
+
 # 💼 Live Demo
 
 <ul>

@@ -10,6 +10,8 @@ import {
   updateUserRecipe,
   removeSaveRecipe,
   getRecipeById,
+  getRecipesByCategory,
+  getRandomRecipe,
 } from "../controllers/recipe.controller.js";
 
 const router = Router();

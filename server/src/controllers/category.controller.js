@@ -6,7 +6,7 @@ import { ApiError } from "../utils/ApiError.js";
 /**
  * Create a new category
  */
-export const createCategory = asyncHandler(async (req, res) => {
+const createCategory = asyncHandler(async (req, res) => {
   const { name, order } = req.body;
 
   if (!name || order === undefined) {
@@ -28,7 +28,7 @@ export const createCategory = asyncHandler(async (req, res) => {
 /**
  * Get all categories
  */
-export const getCategories = asyncHandler(async (req, res) => {
+const getCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find().sort({ order: 1 });
 
   res
@@ -39,7 +39,7 @@ export const getCategories = asyncHandler(async (req, res) => {
 /**
  * Get a single category by ID
  */
-export const getCategoryById = asyncHandler(async (req, res) => {
+const getCategoryById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const category = await Category.findById(id);
 
@@ -55,7 +55,7 @@ export const getCategoryById = asyncHandler(async (req, res) => {
 /**
  * Update a category
  */
-export const updateCategory = asyncHandler(async (req, res) => {
+const updateCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name, order } = req.body;
 
@@ -77,7 +77,7 @@ export const updateCategory = asyncHandler(async (req, res) => {
 /**
  * Delete a category
  */
-export const deleteCategory = asyncHandler(async (req, res) => {
+const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const category = await Category.findByIdAndDelete(id);
